@@ -11,12 +11,12 @@
   - ![Screenshot_2024-05-02 6.00.41.png](img%2FScreenshot_2024-05-02%206.00.41.png)
 - APサーバーを再起動させた場合
   - APサーバーを再起動させた場合、正常にアプリケーションが作動します。
-  -![Screenshot_2024-05-02 6.22.34.png](img%2FScreenshot_2024-05-02%206.22.34.png)
+  - ![Screenshot_2024-05-02 6.25.24.png](img%2FScreenshot_2024-05-02%206.25.24.png)
 
 ### DBサーバーについて
 - DBサーバーの名前とバージョン
   - MySQL version:8.0.36
-  -![Screenshot_2024-05-02 6.25.24.png](img%2FScreenshot_2024-05-02%206.25.24.png)
+  - ![Screenshot_2024-05-02 6.22.34.png](img%2FScreenshot_2024-05-02%206.22.34.png)
 - DBサーバーを終了させた場合、引き続きアクセス可能か
   - DBサーバーのパスワードを空欄にしてアクセスできないようにした場合、アクセスできなくなりました。
   - ![Screenshot_2024-05-02 19.38.12.png](img%2FScreenshot_2024-05-02%2019.38.12.png)
