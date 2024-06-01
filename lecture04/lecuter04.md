@@ -6,6 +6,7 @@
     3.EC2の作成
     4.RDSの作成
     5.EC2からRDSへ接続
+## 構成図  
 ![lecture04_zentaikouseizu.png](img%2Flecture04_zentaikouseizu.png)
 
 ---

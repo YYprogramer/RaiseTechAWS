@@ -5,75 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e2a4ce5-c731-41ec-9eb5-b48dd8c048b7" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/img/Lecuter04OverallPictureImage.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.06.49.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.08.53.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.09.27.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.10.40.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.25.48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-20 5.32.50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 4.55.53.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 4.59.35.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 5.09.48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 5.34.22.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 5.47.18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-22 5.48.34.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-23 4.56.11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-23 5.03.24.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-23 5.06.56.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-23 5.07.27.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 4.40.25.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 4.48.46.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 4.53.42.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.01.35.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.11.28.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.26.47.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.27.55.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.28.09.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.28.21.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.28.32.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.28.52.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.29.17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.29.35.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.29.50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.30.32.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.32.13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.32.48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.33.12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-24 5.33.50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-26 18.20.45.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-26 19.30.18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 4.29.46.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 4.30.37.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 4.31.37.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 4.32.30.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 4.33.06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.10.17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.10.40.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.10.52.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.11.43.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.12.25.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.13.08.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.13.31.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.13.53.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-27 5.49.37.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-28 15.31.58.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-29 4.54.15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-29 4.56.07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-29 4.56.25.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-29 4.57.09.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/ 2024-05-29 5.14.02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/2024-05-20 5.07.10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/2024-05-23 4.37.52.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/EC2 in 2024-05-29 5.29.45.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/EC2 out 2024-05-29 5.30.01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/lecture04_zentaikouseizu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/rds in 2024-05-29 5.23.40.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/img/rds out 2024-05-29 5.23.53.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/lecture04report.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture04/lecuter04.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lecture04/lecuter04.md" beforeDir="false" afterPath="$PROJECT_DIR$/lecture04/lecuter04.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,14 +33,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;lecture04&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/kohe/RaiseTech/RaiseTechAWS&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "lecture04",
+    "last_opened_file_path": "/Users/kohe/RaiseTech/RaiseTechAWS",
+    "settings.editor.selected.configurable": "Settings.Markdown"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lecture04/img" />
@@ -136,5 +70,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
