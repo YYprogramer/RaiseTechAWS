@@ -5,33 +5,41 @@
     3.EC2の作成
     4,RDSの作成
     5.EC2とRDSの接続確認
-## 構成図
-![lecture04_zentaikouseizu.png](img/lecture04_zentaikouseizu.png)
 
 ### 1.VPCの作成
-![ 2024-05-20 5.10.40.png](img/%202024-05-20%205.10.40.png)  
+![AWS_lectureVPC.png](img/AWS_lectureVPC.png)
 ---
 
 ### 2.セキュリティーグループの作成
 EC2用にに設定したセキュリティグループ
 - インバウンドルール  
-![EC2 in 2024-05-29 5.29.45.png](img/EC2%20in%202024-05-29%205.29.45.png)
+![EC2securitygroupIn.png](img/EC2securitygroupIn.png)
 - アウトバウンドルール  
-![EC2 out 2024-05-29 5.30.01.png](img/EC2%20out%202024-05-29%205.30.01.png)
+![EC2sequritygroupOut.png](img/EC2sequritygroupOut.png)  
+
 RDS用に設定したセキュリティグループ
 - インバウンドルール  
-![rds in 2024-05-29 5.23.40.png](img/rds%20in%202024-05-29%205.23.40.png)
+  ![DBsecuritygroupIn.png](img/DBsecuritygroupIn.png)
 - アウトバウンドルール  
-![rds out 2024-05-29 5.23.53.png](img/rds%20out%202024-05-29%205.23.53.png)
+  ![DBsecuritygroupOut.png](img/DBsecuritygroupOut.png)
 ---
 
 ### 3.EC2の作成  
-![ 2024-05-26 19.30.18.png](img/%202024-05-26%2019.30.18.png)
+![EC2.png](img/EC2.png)
 ---
 
 ### 4.RDSの作成  
-![ 2024-05-27 5.49.37.png](img/%202024-05-27%205.49.37.png)
+![RDS.png](img/RDS.png)
 ---
 
 ### 5.EC2とRDSの接続確認  
-![ 2024-05-29 5.14.02.png](img/%202024-05-29%205.14.02.png)
+![connectMySQL.png](img/connectMySQL.png)
+---
+
+## 感想
+VPCの作成は割とすぐにできましたが、EC2・RDSの作成には時間がかかりました。
+セキュリティーグループはどのように作成すれば良いのか。繋がらないEC2とRDS。
+などなど一つ問題を解決すると次の問題が発生し、なかなか前に進まない状況でした。
+メンターの方に質問しながら、なんとか前に進めている状況です。
+第4回課題の提出はなかなか成功体験が得られず、ゴリゴリと学習モチベーションを削られていきました。
+
