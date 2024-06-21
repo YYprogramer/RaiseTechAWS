@@ -48,7 +48,7 @@ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 source ~/.bash_profile
 ```
 ### 4.ruby-buildをインストール
-`ruby-build`とはrbenvのプラグインの一つです。特定のバージョンのRubyをインストールすることができます。
+`ruby-build`とはrbenvのプラグインの一つです。特定のバージョンのRubyをインストールすることができます。  
 .bashrcファイルを再読み込みさせ上記２つの設定を反映させます
 ```
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
@@ -70,4 +70,58 @@ rbenv global 3.2.3
 Rubyのバージョンを確認します
 ```
 ruby -v
+```
+### 6.Bundlerをインストール
+`Bundler`はRubyの依存関係を管理するツールです。  
+Bundler2.3.14をインストールします。
+```
+gem install bundler -v '2.3.14'
+```
+インストールしたBundlerのバージョンを確認します。
+```
+gem list bundler
+```
+### 7.Railsをインストール
+`Rails`とはRuby on Railsの略称でオープンソースのWebアプリケーションフレームワークです。  
+Rails7.1.3.2をインストールします。
+```
+gem install rails -v 7.1.3.2
+```
+インストールしたRailsのバージョンを確認します。
+```
+rails -v
+```
+### 7.NVMをインストール
+`NVM`とはNodeVersionManagerの略で複数のNodeのバージョンを簡単に管理することができます。 
+NVMをインストールします。
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+.bashrcファイルを再読み込みさせNVMのインストールを反映させます
+```
+source ~/.bashrc
+```
+インストールしたNVMのバージョンを確認します。
+```
+nvm -v
+```
+### 8.Nodeをインストール
+'Node'とはJavaScriptを実行できるツールです。  
+Node v17.9.1 をインストールします。
+```
+nvm install v17.9.1
+```
+インストールしたNodeのバージョンを確認します。
+```
+node -v
+```
+### 9.Yarnをインストール
+'Yarn'とはJavaScriptのパッケージマネージャーで依存関係を適切に管理してくれます。  
+npm(NodePackageManager)を使用してYarn1.22.19をインストールします。
+```
+npm install -global yarn@1.22.19
+```
+インストールしたYarnのバージョンを確認します。
+```
+yarn -v
 ```
