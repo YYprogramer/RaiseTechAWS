@@ -125,3 +125,74 @@ npm install -global yarn@1.22.19
 ```
 yarn -v
 ```
+### 10.MySQLをインストール
+AmazonLinux2の場合を想定しています。  
+yumを最新にアップデートします。
+```
+sudo yum update -y
+```
+デフォルトで作成されているMariaDB関連ファイルを削除します。  
+この作業を行わないとMysqlにおいてうまく実行してくれないコマンドがあります。
+```
+sudo yum remove -y mariadb-*
+```
+MySQLのリポジトリをyumに追加します
+```
+sudo yum localinstall -y https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
+```
+MySQLの起動に必要なパッケージをインストール
+```
+sudo yum install -y mysql-community-server
+sudo yum install -y --enablerepo=mysql80-community mysql-community-devel
+```
+ログファイルの作成
+```
+sudo touch /var/log/mysqld.log
+```
+MySQLの起動
+```
+sudo systemctl start mysqld
+```
+ディレクトリの所有権と権限を修正
+```
+sudo chown -R mysql:mysql /var/lib/mysql
+sudo chmod -R 750 /var/lib/mysql
+sudo chown mysql:mysql /var/log/mysqld.log
+sudo chmod 640 /var/log/mysqld.log
+```
+MySQLの再起動
+```
+sudo systemctl restart mysqld
+```
+MySQLのステータス確認
+```
+sudo systemctl status mysqld
+```
+***初期パスワードの設定***  
+初期パスワードを確認します。
+```
+sudo systemctl status mysqld
+```
+実行すると下記ログが表示されますのでパスワードをコピーします。
+```
+/// 表示されるログです
+A temporary password is generated for root@localhost: [パスワード]
+```
+MySQLにログイン
+```
+mysql -u root -p
+//[パスワード]を入力しEnter
+```
+***エラーの解消***  
+MySQLにログインしようとしても下記のようなエラーが発生しました
+```
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (13)
+```
+- エラーの内容  
+MySQLクライアントが指定されたソケットファイル（/var/lib/mysql/mysql.sock）を介してMySQLサーバーに接続できなかったことを示しています。
+- エラーの解消方法
+ソケットファイルの作成
+```
+sudo touch /tmp/mysql.sock
+```
+を実行し、ソケットファイルを作成することでエラー解消できました。
