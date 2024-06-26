@@ -136,7 +136,7 @@ sudo yum update -y
 ```
 sudo yum remove -y mariadb-*
 ```
-MySQLのリポジトリをyumに追加します
+MySQLのリポジトリをyumに追加します。
 ```
 sudo yum localinstall -y https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
 ```
@@ -168,7 +168,7 @@ MySQLのステータス確認
 ```
 sudo systemctl status mysqld
 ```
-***初期パスワードの設定***  
+初期パスワードの設定  
 初期パスワードを確認します。
 ```
 sudo systemctl status mysqld
@@ -196,3 +196,62 @@ MySQLクライアントが指定されたソケットファイル（/var/lib/mys
 sudo touch /tmp/mysql.sock
 ```
 を実行し、ソケットファイルを作成することでエラー解消できました。
+
+### 11.サンプルアプリケーションをクローン
+サンプルアプリケーションをEC2上にクローン
+```
+git clone https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+```
+### 12.組み込みサーバーでデプロイ
+サンプルアプリケーションのconfigディレクトリへ移動
+```
+cd raisetech-live8-sample-app/config
+```
+database.yml.sampleをコピーしdatabase.ymlファイル作成
+```
+cp database.yml.sample database.yml
+```
+viコマンドを使用して接続先をRDSへ変更します。
+```
+vi database.yml
+```
+以下のようにターミナルで表示されます
+![vi_database.png](img/vi_database.png)
+insertモードに入ります。
+```
+iキーを押す。
+viエディタの末尾に[-- INSERT --]と表示されます
+```
+接続先をRDSに変更します。
+```
+<変更前>
+〜
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password:
+〜
+<変更後>
+〜
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: [RDSのユーザ名]
+  password: [RDSのタパスワード]
+  host    : [RDSのエンドポイント]
+  port    : 3306
+〜
+```
+編集を保存します。
+```
+Escキーを押してinsertモードを終了します。
+viエディタの末尾に
+:wq
+と入力し、変更を保存します。こうすることで変更を保存してviエディタを終了させます。
+```
+EC2のセキュリティグループに'ポート番号 3000'を許可します。
+3000番を許可することで、Ruby on RailsやNode.jsからのリクエストを受けるけます。
+![EC2security.png](img/EC2security.png)
