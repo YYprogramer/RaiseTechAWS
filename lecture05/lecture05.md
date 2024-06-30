@@ -219,8 +219,8 @@ vi database.yml
 ![vi_database.png](img/vi_database.png)
 insertモードに入ります。
 ```
-iキーを押す。
-viエディタの末尾に[-- INSERT --]と表示されます
+iキーを押します。
+viエディタの末尾に[-- INSERT --]と表示されます。
 ```
 接続先をRDSに変更します。
 ```
@@ -255,3 +255,63 @@ viエディタの末尾に
 EC2のセキュリティグループに'ポート番号 3000'を許可します。
 3000番を許可することで、Ruby on RailsやNode.jsからのリクエストを受けるけます。
 ![EC2security.png](img/EC2security.png)
+サンプルアプリケーションのルートディレクトリへ移動します。
+```
+cd raisetech-live8-sample-app
+```
+RubyonRailsを使用する環境構築を行うために下記コマンドを実行します。
+```
+bundle install
+```
+```
+bin/setup
+```
+ブラウザにアクセスするためにwebpackをインストールします。
+```
+yarn add webpack webpack-cli
+```
+画像処理ライブラリであるmini_magickを追加します。
+```
+vim config/application.rb
+```
+insertモードに入ります。
+```
+iキーを押します。
+viエディタの末尾に[-- INSERT --]と表示されます。
+```
+```
+<変更前>
+〜
+class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.1
+〜
+<変更後>
+〜
+class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.1    
+    config.active_storage.variant_processor = :mini_magick
+〜
+```
+編集を保存します。
+```
+Escキーを押してinsertモードを終了します。
+viエディタの末尾に
+:wq
+と入力し、変更を保存します。こうすることで変更を保存してviエディタを終了させます。
+```
+サーバーを起動します。
+```
+bin/dev
+```
+アプリケーションにアクセスします。
+```
+ブラウザでURLを入力しアクセス
+[EC2のパブリックIP]:3000
+```
+このような画面が表示されれば成功です。
+![check_server01.png](img/check_server01.png)
+画像が正常に表示されるかも確認します。
+いちごの画像を追加します。
+![check_server02.png](img/check_server02.png)
