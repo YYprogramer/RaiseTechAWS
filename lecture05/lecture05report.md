@@ -3,3 +3,12 @@
 ![check_server01.png](img/check_server01.png)
 画像表示確認
 ![check_server02.png](img/check_server02.png)
+
+## PumaサーバーとUnixSocketを使用して動作確認
+curlコマンド
+![socket_curl_log.png](img/socket_curl_log.png)
+Serverログ
+![socket_saver_log.png](img/socket_saver_log.png)
+
+## Nginx単体での接続確認
+![nginx_connect.png](img/nginx_connect.png)

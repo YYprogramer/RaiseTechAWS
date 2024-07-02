@@ -19,6 +19,7 @@
 ※令和６年６月時点のバージョンです
 
 ## 実装手順
+### 組み込みサーバー「puma」のみでの起動
 ### 1. EC2に接続
 ```
 ssh -i キーペア名.pem ec2-user@<パブリックIP>
@@ -308,10 +309,132 @@ bin/dev
 アプリケーションにアクセスします。
 ```
 ブラウザでURLを入力しアクセス
-[EC2のパブリックIP]:3000
+http://[EC2のパブリックIP]:3000
 ```
 このような画面が表示されれば成功です。
 ![check_server01.png](img/check_server01.png)
 画像が正常に表示されるかも確認します。
 いちごの画像を追加します。
 ![check_server02.png](img/check_server02.png)
+
+### 組み込みサーバー「puma」及びUnixSocketを使用し動作確認 
+***UnixSocket***とはコンピューターないで動作しているプログラム同士がデータをやり取りするための方法の一種です。  
+今回の場合は、ネットワークとpumaを接続させるために使用します。
+### 1.pumaサーバーの設定変更
+pumaサーバーのリッスンの設定をデフォルトの3000からUnixSocketに変更します。
+```
+vim config/puma.rb
+```
+insertモードに入ります。
+```
+iキーを押します。
+viエディタの末尾に[-- INSERT --]と表示されます。
+```
+```
+<変更前>
+〜
+# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
+#
+port ENV.fetch("PORT") { 3000 }
+〜
+<変更後>
+〜
+# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
+#
+# port ENV.fetch("PORT") { 3000 }
+〜
+```
+編集を保存します。
+```
+Escキーを押してinsertモードを終了します。
+viエディタの末尾に
+:wq
+と入力し、変更を保存します。こうすることで変更を保存してviエディタを終了させます。
+```
+リッスンが変更されているか確認します。
+```
+rails s
+```
+```
+以下のログが出れば成功です
+〜
+*  Min threads: 5
+*  Max threads: 5
+*  Environment: development
+*          PID: ****
+* Listening on unix:///home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
+Use Ctrl-C to stop
+```
+## 2.接続確認
+サーバーを起動します。
+```
+rails s
+```
+別タブを開き、EC２にアクセスします。  
+その後、unixsocket通信を使用しアクセスします。
+```
+curl --unix-socket /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock http://localhost/
+```
+以下のようなログが表示されます。
+![socket_curl_log.png](img/socket_curl_log.png)
+htmlファイルが表示されているので成功です。
+
+サーバーのログも確認しておきます。
+![socket_saver_log.png](img/socket_saver_log.png)
+Completed 200 OK が表示されているので成功です。
+
+### Nginx単体での動作確認
+***Nginx***とはインターネット上でWebページを表示させるためのWebサーバーの一種です。
+### 1.Nginxをインストール
+yumをアップデートします。
+```
+sudo yum update -y
+```
+Nginxをインストールします。
+```
+sudo amazon-linux-extras install nginx1 -y
+```
+Nginxバーションを確認し、正常にインストールできているか確認します。
+```
+nginx -v
+```
+## 2.接続確認
+Nginxを起動させます。
+```
+sudo systemctl start nginx
+```
+Nginxのステータスを確認します。
+```
+sudo systemctl status nginx
+```
+以下のようなログが表示されていれば成功です。
+```
+// 表示されるログです
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2024-07-02 19:59:04 UTC; 10s ago
+   ↑　active (running)になっているので起動しています
+〜
+```
+![nginx_log.png](img/nginx_log.png)
+続いてEC2のインバウンドルールを変更します。
+```
+EC2インバウンドルール
+<変更前>
+・22番ポート
+・3000番ポート
+<変更後>
+・22番ポート
+・80番ポート
+
+3000番ポートはRubyonRailsなどのアプリケーションからのリクエストを受け付けるポートです。
+80番ポートはHTTPリクエストを受け付けるポートです。
+Nginxを通してWeb表示させるため、3000番ポートは不要になります。
+```
+Webページにアクセスします。
+```
+ブラウザでURLを入力しアクセス
+http://[EC2のパブリックIP]
+```
+このように表示されれば成功です。
+![nginx_connect.png](img/nginx_connect.png)
