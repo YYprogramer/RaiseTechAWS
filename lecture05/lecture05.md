@@ -20,6 +20,9 @@
 
 ## 実装手順
 ### 組み込みサーバー「puma」のみでの起動
+***組み込みサーバー***とはリクエストを受け取ったり・レスポンスを返したりしてくれるウェブアプリケーションを動かすためのソフトウェアがあらかじめセッティングされているサーバーのこと。  
+***Puma***とはRuby on Railsと一緒に使用されることが多い組み込みサーバーです。  
+今回のサンプルアプリケーションはRuby on Railsを使用するため、組み込みサーバーとしてPumaを使用します。
 ### 1. EC2に接続
 ```
 ssh -i キーペア名.pem ec2-user@<パブリックIP>
@@ -398,7 +401,7 @@ Nginxバーションを確認し、正常にインストールできているか
 ```
 nginx -v
 ```
-## 2.接続確認
+### 2.接続確認
 Nginxを起動させます。
 ```
 sudo systemctl start nginx
@@ -438,3 +441,205 @@ http://[EC2のパブリックIP]
 ```
 このように表示されれば成功です。
 ![nginx_connect.png](img/nginx_connect.png)
+
+### Nginx・組み込みサーバー（Puma)・UnixSocketを使用して動作確認
+### 1.環境構築
+まずはnginxを編集していきます。
+```
+sudo vim /etc/nginx/nginx.conf
+```
+insertモードに入ります。
+```
+iキーを押します。
+viエディタの末尾に[-- INSERT --]と表示されます。
+```
+```
+<変更前>
+〜
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+〜
+<変更後>
+〜
+user ec2-user;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+〜
+
+
+<変更前>
+〜
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+〜
+<変更後>
+〜
+    include /etc/nginx/conf.d/*.conf;
+    
+     upstream puma {
+        server unix:///home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock;
+    }
+    
+    server {
+〜
+
+<変更前>
+〜
+    server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+〜
+<変更後>
+〜
+    server {
+        listen       80;
+        listen       [::]:80;
+        server_name  localhost;
+        root          /home/ec2-user/raisetech-live8-sample-app/public;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+        
+                location / {
+            try_files $uri $uri/index.html $uri.html @puma;
+        }
+
+        location @puma {
+            proxy_redirect off;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_pass http://puma;
+        }
+
+〜
+```
+nginxの設定に間違いがないかテストします。
+```
+sudo nignx -t
+// コマンドログ
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+このようなログが表示されれば成功です。
+```
+nginxを起動します
+```
+sudo systemctl start nginx
+```
+※すでにnginxを起動しており、再起動させる場合はこちらのコマンド
+```
+sudo systemctl restart nginx
+```
+適切に起動しているか確認
+```
+sudo systemctl status nginx
+```
+```
+// コマンドログ
+[ec2-user@ip-10-0-5-99 ~]$ sudo systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Sat 2024-07-06 20:27:30 UTC; 1min 39s ago
+  Process: 3503 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 3499 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 3498 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 3505 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─3505 nginx: master process /usr/sbin/nginx
+           └─3506 nginx: worker process
+
+Jul 06 20:27:30 ip-10-0-5-99.ap-northeast-1.compute.internal systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Jul 06 20:27:30 ip-10-0-5-99.ap-northeast-1.compute.internal nginx[3499]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Jul 06 20:27:30 ip-10-0-5-99.ap-northeast-1.compute.internal nginx[3499]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Jul 06 20:27:30 ip-10-0-5-99.ap-northeast-1.compute.internal systemd[1]: Started The nginx HTTP and reverse proxy server.
+このようなログが表示されれば成功です。
+```
+続いてPumaを編集していきます。
+puma.sarvice.sampleを/etc/systemd/system直下に`puma.sarvice`というファイル名で複製します
+```
+ssudo cp ~/raisetech-live8-sample-app/samples/puma.service.sample /etc/systemd/system/puma.service
+```
+複製できているか確認します。
+```
+sudo cat /etc/systemd/system/puma.service
+```
+```
+// コマンドログ
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+# Uncomment for socket activation (see below)
+
+# Requires=puma.socket
+
+[Service]
+# Puma supports systemd's `Type=notify` and watchdog service
+# monitoring, if the [sd_notify](https://github.com/agis/ruby-sdnotify) gem is installed,
+# as of Puma 5.1 or later.
+# On earlier versions of Puma or JRuby, change this to `Type=simple` and remove
+# the `WatchdogSec` line.
+Type=notify
+
+# If your Puma process locks up, systemd's watchdog will restart it within seconds.
+WatchdogSec=60
+
+# Preferably configure a non-privileged user
+User=ec2-user
+
+# The path to the your application code root directory.
+# Also replace the "<YOUR_APP_PATH>" place holders below with this path.
+# Example /home/username/myapp
+WorkingDirectory=/home/ec2-user/raisetech-live8-sample-app
+
+# Helpful for debugging socket activation, etc.
+Environment=PUMA_DEBUG=1
+
+# SystemD will not run puma even if it is in your path. You must specify
+# an absolute URL to puma. For example /usr/local/bin/puma
+# Alternatively, create a binstub with `bundle binstubs puma --path ./sbin` in the WorkingDirectory
+#ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/puma.rb
+
+# Variant: Rails start.
+# ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
+
+ExecStart=/bin/bash -lc 'bundle exec puma -C config/puma.rb'
+
+# Enabled systemd reload
+# refs: https://zenn.dev/trysmr/articles/65a6db4deffdbf
+ExecReload=/bin/kill -USR2 $MAINPID
+
+# Variant: Use `bundle exec --keep-file-descriptors puma` instead of binstub
+# Variant: Specify directives inline.
+# ExecStart=/<FULLPATH>/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
+
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+```
+このように表示されれば成功です。  
+変更を反映させます。
+```
+sudo systemctl daemon-reload
+```
+pumaを起動させます
+```
+sudo systemctl start puma
+```
+pumaの状態を確認します
+```
+sudo systemctl status puma
+```
