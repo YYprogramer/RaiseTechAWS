@@ -643,3 +643,36 @@ pumaの状態を確認します
 ```
 sudo systemctl status puma
 ```
+AmazonRDSを起動させ  
+EC2のパブリックIPからサンプルアプリケーションを表示させます。
+```
+http://[パブリックIP]
+```
+#### エラー
+***内容***  
+- CSSファイルの様式が崩れており、センタリングや枠線の表示がされていない。
+- NewFruitから新しいフルーツを保存しても、表示されない。DateBaseに保存されていない。
+![error01.png](img/error01.png)
+***原因***  
+nginxのエラーログを確認
+```
+sudo tail -f /var/log/nginx/error.log
+```
+```
+// ログ
+~ *13 open() "/var/lib/nginx/tmp/proxy/2/00/0000000002" failed (13: Permission denied) while reading upstream, ~
+```
+と表示されることからパーミンションエラーとなっていることが推測されます。  
+*パーミッションエラー*とは許可権限が適切ではない時に発生します。今回のエラーは読み取り権限や書き込み権限が不適切なようです。
+***解決方法***
+nginxディレクトリに読み取り・書き込み・実行の権限を付与する
+まず、ディレクトリの所有者を変更します
+```
+sudo chown -R ec2-user:ec2-user /var/lib/nginx
+```
+続いて、権限を読み取り・書き込み・実行権限を付与します
+```
+sudo chmod -R 755 /var/lib/nginx
+```
+このコマンドを実行することにより読み取り・書き込み権限が付与されたため正常に画面表示が行われるようになり、新規登録もできるようになりました。
+![check_nginx&puma.png](img/check_nginx%26puma.png)

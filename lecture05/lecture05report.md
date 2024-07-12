@@ -12,3 +12,7 @@ Serverログ
 
 ## Nginx単体での接続確認
 ![nginx_connect.png](img/nginx_connect.png)
+
+## Nginx及びPumaを使用して接続確認
+![check_nginx&puma.png](img/check_nginx%26puma.png)
+新規保存も問題なくできるか確認済み。
