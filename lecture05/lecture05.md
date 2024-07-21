@@ -368,7 +368,7 @@ rails s
 * Listening on unix:///home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
 Use Ctrl-C to stop
 ```
-## 2.接続確認
+### 2.接続確認
 サーバーを起動します。
 ```
 rails s
@@ -663,9 +663,9 @@ sudo tail -f /var/log/nginx/error.log
 ~ *13 open() "/var/lib/nginx/tmp/proxy/2/00/0000000002" failed (13: Permission denied) while reading upstream, ~
 ```
 と表示されることからパーミンションエラーとなっていることが推測されます。  
-*パーミッションエラー*とは許可権限が適切ではない時に発生します。今回のエラーは読み取り権限や書き込み権限が不適切なようです。
-***解決方法***
-nginxディレクトリに読み取り・書き込み・実行の権限を付与する
+*パーミッションエラー*とは許可権限が適切ではない時に発生します。今回のエラーは読み取り権限や書き込み権限が不適切なようです。  
+***解決方法***  
+nginxディレクトリに読み取り・書き込み・実行の権限を付与する。  
 まず、ディレクトリの所有者を変更します
 ```
 sudo chown -R ec2-user:ec2-user /var/lib/nginx
@@ -676,3 +676,107 @@ sudo chmod -R 755 /var/lib/nginx
 ```
 このコマンドを実行することにより読み取り・書き込み権限が付与されたため正常に画面表示が行われるようになり、新規登録もできるようになりました。
 ![check_nginx&puma.png](img/check_nginx%26puma.png)
+
+### ELB(ALB)の追加
+***ELB***とはElastic Load Balancingの略称で、AWSが提供するサービスの一部です。複数のサーバーに接続を分散させることができ、１つのサーバーにアクセスが集中しないよう自動で負荷分散を行ってくれるサービスです。  
+***ALB***とはApplication Load Balancerの略称です。HTTPやHTTPS用に作成されておいるためWebアプリケーション用の負荷分散に適しています。  
+### 1.ターゲットグループの作成
+EC2のダッシュボードから「ロードバランシング」▶︎「ターゲットグループ」を選択します。  
+![ELB_targetgroup.png](img/ELB_targetgroup.png)
+「ターゲットグループの作成」を選択します。  
+下記のように作成します。
+```
+今回の設定点
+・ターゲットグループ名を作成
+・VPCを選択
+```
+![make_targetgroup01.png](img/make_targetgroup01.png)
+![make_targetgroup02.png](img/make_targetgroup02.png)
+![make_targetgroup03.png](img/make_targetgroup03.png)
+ここまで設定できたら「次へ」を押します。  
+以下の画面に遷移しますので、該当するセキュリティーグループを選択し、「保留中として以下を含める」をクリックします。
+![make_targetgroup05.png](img/make_targetgroup05.png)
+これでターゲットグループの作成完了です。
+![make_targetgroup06.png](img/make_targetgroup06.png)
+
+### 2.ロードバランサーの作成
+EC2ダッシュボードから「ロードバランシング」▶︎「ロードバランサー」を選択。
+「ロードバランサーの作成」をクリックします。
+![make_loadbalancing01.png](img/make_loadbalancing01.png)
+今回のアプリケーションでは「Application Load Balancer」を作成します。
+「Application Load Balancer」の「作成」をクリックします。
+![make_loadbalancing02.png](img/make_loadbalancing02.png)
+次のように設定しロードバランサーを作成します。
+```
+今回の設定点
+・ロードバランサー名を作成
+・VPCを選択
+・サブネットを選択
+・セキュリティグループを選択
+・リスナーの転送先を選択
+```
+![make_loadbalancing03.png](img/make_loadbalancing03.png)
+![make_loadbalancing04.png](img/make_loadbalancing04.png)
+![make_loadbalancing05.png](img/make_loadbalancing05.png)
+![make_loadbalancing06.png](img/make_loadbalancing06.png)
+![make_loadbalancing07.png](img/make_loadbalancing07.png)
+![make_loadbalancing08.png](img/make_loadbalancing08.png)
+![make_loadbalancing09.png](img/make_loadbalancing09.png)
+ここまでできたら「次へ」をクリックします。
+これでロードバランサーの作成完了です。
+![make_loadbalancing10.png](img/make_loadbalancing10.png)
+
+### 3.接続確認
+ロードバランサーとターゲットグループが正常に作動しているか確認します。
+![check_ALB.png](img/check_ALB.png)
+![check_ELB.png](img/check_ELB.png)
+アクセスできるか確認を行います。
+```
+http://[ロードバランサーのDNS名]
+```
+#### エラー
+![ALB_error.png](img/ALB_error.png)
+***内容***  
+ALBを適用したアプリケーションへのアクセスができない。  
+***原因***  
+ロードバランサーDNS名によるアクセス許可を行っていないため、Railsのホスト検証に引っかかった。  
+***解決方法***  
+ロードバランサーDNS名によるアクセスを許可する。
+development.rbファイルの修正
+```
+sudo vim config/environments/development.rb 
+```
+```
+<修正前>
+〜
+Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
+  
+  # In the development environment your application's code is reloaded any time
+
+〜
+<修正後>
+〜
+Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
+  config.hosts << [ロードバランサーのDNS名]
+  # In the development environment your application's code is reloaded any time
+
+〜
+```
+上記修正を適用させるため、サーバーを再起動します。
+```
+sudo systemctl restart puma
+```
+このように修正することで正常にアクセスできます。
+![ALB-connect-test.png](img/ALB-connect-test.png)
+
+#### エラー
+![S3_error.png](img/S3_error.png)
+***内容***  
+S3へアップしたオブジェクトへのアクセスができない。  
+***原因***  
+ロードバランサーDNS名によるアクセス許可を行っていないため、Railsのホスト検証に引っかかった。  
+***解決方法***  
+ロードバランサーDNS名によるアクセスを許可する。
+development.rbファイルの修正

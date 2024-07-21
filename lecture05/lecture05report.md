@@ -16,3 +16,8 @@ Serverログ
 ## Nginx及びPumaを使用して接続確認
 ![check_nginx&puma.png](img/check_nginx%26puma.png)
 新規保存も問題なくできるか確認済み。
+
+## ELB(ALB)を導入して接続確認
+![check_ALB.png](img%2Fcheck_ALB.png)
+![check_ELB.png](img%2Fcheck_ELB.png)
+![ALB-connect-test.png](img/ALB-connect-test.png)
