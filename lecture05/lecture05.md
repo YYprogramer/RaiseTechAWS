@@ -771,12 +771,115 @@ sudo systemctl restart puma
 このように修正することで正常にアクセスできます。
 ![ALB-connect-test.png](img/ALB-connect-test.png)
 
+### S3の導入
+***S3***とはSimple Storage Serviceの略で、AWSによって提供されるストレージサービスの一種。
+S3ストレージ内に画像を保存することで、大容量の保存できたり、高いセキュリティ機能を有しているなど様々なメリットがあります。
+
+### 1.S3の作成
+AWSの検索窓に「S3」と入力し、S3サービスを選択します。
+![S3_service_serch.png](img/S3_service_serch.png)
+
+バケットの作成をクリックします。
+![S3_make_backet.png](img%2FS3_make_backet.png)
+
+作成するバケットの内容を設定していきます。  
+今回はバケット名のみ作成し、他はデフォルトの設定です。
+![S3_make01.png](img/S3_make01.png)
+![S3_make02.png](img/S3_make02.png)
+![S3_make03.png](img/S3_make03.png)
+![S3_make04.png](img/S3_make04.png)
+![S3_make05.png](img/S3_make05.png)
+![S3_make06.png](img/S3_make06.png)
+これでS3バケットの作成は完了です。
+
+### 2.IAMにS3FullAcsessポリシーを付与
+IAM＞ユーザーからS3へアクセスするユーザーを選択し、許可ポリシーの「許可を追加」をクリックします。
+![S3_iamporicy1.png](img/S3_iamporicy1.png)
+![S3_iamporicy2.png](img/S3_iamporicy2.png)
+
+許可のオプションを「ポリシーを直接アタッチする」を選択します。  
+次に、許可ポリシーの検索窓の「S3」と入力し、「Amazon S3FullAccess」を許可します。
+![S3_iamporicyadd1.png](img/S3_iamporicyadd1.png)
+![S3_iamporicyadd2.png](img/S3_iamporicyadd2.png)
+![S3_iamporicyadd3.png](img/S3_iamporicyadd3.png)
+
+### 3.アクセスキーとシークレットキーの作成
+ユーザーへアクセスキー・シークレットキーを付与します。  
+ユーザー情報の画面から「アクセスキーを作成」をクリックします。
+![S3_makeaccesskey1.png](img/S3_accesskey1.png)
+
+アクセスキー・シクレットキーを作成していきます。
+![S3_acsesskey2.png](img/S3_acsesskey2.png)
+![S3_acsesskey3.png](img/S3_acsesskey3.png)
+![S3_acsesskey4.png](img/S3_acsesskey4.png)
+
+作成したアクセスキー・シークレットキーを環境変数に設定します
+```
+//ターミナル
+sudo vim ~/.zshrc
+```
+```
+「i」を押してinsertモードに切り替える
+```
+```
+export AWS_ACCSESS_KEY_ID = [自身のアクセスキー]
+export AWS_SEACRET_ACCSESS_KEY_ID = [自身のシークレットキー]
+```
+```
+「esc」を押してinsertモードから抜ける。
+「:wq」を入力して変更を保存する。
+```
+![S3_keysetting1.png](img/S3_keysetting1.png)
+![S3_keysetting2.png](img/S3_keysetting2.png)
+
+設定した環境変数をstorage.ymlに記述していきます
+```
+//ターミナル
+sudo vim config/storage.yml
+```
+```
+amazon:
+service: S3
+access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+secret_access_key:  <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+region: ap-northeast-1
+bucket:[自身のバケット名]
+```
+![S3_strage.yml_setting.png](img/S3_strage.yml_setting.png)
+
+続いて画像の保存先をlocalからamazonに変更します
+```
+//ターミナル
+sudo vim config/environments/developmant.rb
+```
+```
+<修正前>
+config.activ_strage.service = :local
+
+<修正後>
+config.activ_strage.service = :amazon
+```
+![S3_development.rb_setting1.png](img/S3_development.rb_setting1.png)
+![S3_development.rb_setting2.png](img/S3_development.rb_setting2.png)
+
 #### エラー
 ![S3_error.png](img/S3_error.png)
 ***内容***  
 S3へアップしたオブジェクトへのアクセスができない。  
 ***原因***  
-ロードバランサーDNS名によるアクセス許可を行っていないため、Railsのホスト検証に引っかかった。  
+- バケットポリシーを設定していなかったため
+- パブリックアクセスをすべてブロックしていたため
 ***解決方法***  
-ロードバランサーDNS名によるアクセスを許可する。
-development.rbファイルの修正
+- バケットポリシーを設定することでS3オブジェクトURLへのアクセスを許可しました。
+![S3_backetporicy.png](img/S3_backetporicy.png)
+- 作成したS3の設定から「パブリックアクセスをすべてブロック」のチェックを外す
+![S3_publicacssecc.png](img/S3_publicacssecc.png)
+
+### 4.接続確認
+サンプルアプリケーションにアクセスして、画像が正常に表示されることを確認します。  
+続いて新しいフルーツを登録します。
+![S3_entry_newfruit.png](img/S3_entry_newfruit.png)
+![S3_entry_check.png](img/S3_entry_check.png)
+最後にオブジェクトURLからもアクセスできることを確認します。
+![S3_entry_url.png](img/S3_entry_url.png)
+

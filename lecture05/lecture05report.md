@@ -21,3 +21,11 @@ Serverログ
 ![check_ALB.png](img%2Fcheck_ALB.png)
 ![check_ELB.png](img%2Fcheck_ELB.png)
 ![ALB-connect-test.png](img/ALB-connect-test.png)
+
+## S3を導入
+アプリケーションで新しいフルーツを登録
+![S3_entry_newfruit.png](img%2FS3_entry_newfruit.png)
+アプリケーションに登録されているか確認
+![S3_entry_check.png](img%2FS3_entry_check.png)
+S3のオブジェクトURLにアクセス
+![S3_entry_url.png](img%2FS3_entry_url.png)
