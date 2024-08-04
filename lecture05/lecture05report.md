@@ -29,3 +29,12 @@ Serverログ
 ![S3_entry_check.png](img%2FS3_entry_check.png)
 S3のオブジェクトURLにアクセス
 ![S3_entry_url.png](img%2FS3_entry_url.png)
+
+## 構成図
+![Lecture05.drawio.png](img/Lecture05.drawio.png)
+
+## 感想
+- アプリケーションをデプロイまで持って行けてよかった
+- UnixSocket,Nginx,Pumaそれぞれの役割が手を動かしながらだとだいたい身につきました
+- 課題完了まで長かったです
+- セキュリティについては１箇所に設定しておけばOKなのではなく、使用するサービスごとにアクセス制限をかけることでセキュリティーを頑丈にするということがわかりました。
